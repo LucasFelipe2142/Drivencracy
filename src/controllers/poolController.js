@@ -20,7 +20,12 @@ export async function postPool(req, res) {
     const day = date.getDay() < 10 ? `0${date.getDay()}` : date.getDay();
     const month =
       date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth();
-    expirate = `${day}/${month}/${date.getFullYear()}`;
+    const hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+    const minute =
+      date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+    const second =
+      date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
+    expirate = `${day}-${month}-${date.getFullYear()} ${hour}:${minute}:${second}`;
   }
   db.collection("poolBd")
     .insertOne({

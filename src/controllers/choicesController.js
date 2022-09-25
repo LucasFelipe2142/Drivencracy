@@ -30,6 +30,7 @@ export async function postChoices(req, res) {
             .insertOne({
               ...req.body,
               votes: 0,
+              dateVote: [],
             })
             .then(() => res.send(req.body));
         });
