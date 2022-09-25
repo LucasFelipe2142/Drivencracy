@@ -26,6 +26,7 @@ export async function postChoices(req, res) {
       db.collection("choicesBd")
         .findOne({
           title: req.body.title,
+          poolId: req.body.poolId,
         })
         .then((value) => {
           if (value !== null) return res.sendStatus(409);
@@ -49,6 +50,10 @@ export async function getChoices(req, res) {
     .toArray()
     .then((object) => {
       if (object.length === 0) return res.sendStatus(404);
+      for (let i = 0; i < object.length; i++) {
+        delete object[i].votes;
+        delete object[i].dateVote;
+      }
       res.send(object);
     });
 }

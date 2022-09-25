@@ -73,6 +73,7 @@ export async function getResults(req, res) {
   }
 
   let champion = 0;
+  let indice = 0;
   const id = req.params.id;
   db.collection("choicesBd")
     .find({
@@ -82,14 +83,17 @@ export async function getResults(req, res) {
     .then((object) => {
       if (object.length === 0) return res.sendStatus(404);
       for (let i = 0; i < object.length; i++) {
-        if (object[i].votes > champion) champion = object[i];
+        if (object[i].votes > champion) {
+          indice = i;
+          champion = object[i].votes;
+        }
       }
       const response = {
         title: pool.title,
         expireAt: pool.expireAt,
         result: {
-          title: champion.title,
-          votes: champion.votes,
+          title: object[indice].title,
+          votes: object[indice].votes,
         },
       };
 
