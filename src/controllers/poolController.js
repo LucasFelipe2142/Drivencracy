@@ -8,7 +8,7 @@ const mongoClient = new MongoClient(process.env.MONGO_URI);
 let db;
 
 mongoClient.connect().then(() => {
-  db = mongoClient.db("drivencracyUol");
+  db = mongoClient.db("drivencracyBd");
 });
 
 export async function postPool(req, res) {

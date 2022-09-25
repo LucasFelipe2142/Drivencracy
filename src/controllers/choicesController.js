@@ -8,10 +8,11 @@ const mongoClient = new MongoClient(process.env.MONGO_URI);
 let db;
 
 mongoClient.connect().then(() => {
-  db = mongoClient.db("drivencracyUol");
+  db = mongoClient.db("drivencracyBd");
 });
 
 export async function postChoices(req, res) {
+  const now = Date.now();
   const aux = ObjectId(req.body.poolId);
   console.log(aux);
   db.collection("poolBd")
@@ -19,7 +20,9 @@ export async function postChoices(req, res) {
       _id: aux,
     })
     .then((object) => {
-      if (object === null) return res.send(object);
+      if (object === null) return res.sendStatus(404);
+      const expirate = new Date(object.expireAt);
+      if (now > expirate) return res.sendStatus(403);
       db.collection("choicesBd")
         .findOne({
           title: req.body.title,
